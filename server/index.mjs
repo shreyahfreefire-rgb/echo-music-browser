@@ -123,8 +123,14 @@ app.get('/api/lyrics', wrap(async (req) => {
 const cache = new Map(); // videoId -> { url, via, exp }
 const probe = async (url) => { const r = await fetch(url, { headers: { Range: 'bytes=0-1' } }); r.body?.cancel?.(); return r.status; };
 const basicInfo = async (yt, id, client) => {
-  try { return await basicInfo(yt, id, client); }
-  catch (e) { if (/toUpperCase/.test(String(e.message))) return yt.getBasicInfo(id, client); throw e; } // older versions take a string
+  try {
+    return await yt.getBasicInfo(id, client);
+  } catch (e) {
+    if (/toUpperCase/.test(String(e.message))) {
+      return yt.getBasicInfo(id, client);
+    }
+    throw e;
+  }
 };
 const CLIENTS = ['ANDROID_VR', 'IOS', 'TV'];
 // Optional: let yt-dlp use YOUR logged-in session (set one env var before starting)

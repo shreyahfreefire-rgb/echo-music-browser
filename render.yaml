@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: echo-music
+    runtime: docker
+    plan: free
+    healthCheckPath: /
